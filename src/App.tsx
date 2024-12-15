@@ -6,21 +6,23 @@ import { Register } from './pages/Register';
 import { Profile } from './pages/Profile';
 import { Login } from './pages/Login';
 import { Cart } from './pages/Cart';
-import { Sidebar } from './components/Sidebar';
+import { MainPage } from './pages/MainPage';
+import { ErrorPage } from './pages/Error';
 
 function App() {
 	const router = createBrowserRouter([
 		{
 			path: '/',
-			element: <Sidebar />,
+			element: <MainPage />,
 			children: [
 				{ path: 'products', element: <Products /> },
 				{ path: 'cart', element: <PrivateRoute><Cart /></PrivateRoute> },
 				{ path: 'login', element: <Login /> },
 				{ path: 'register', element: <Register /> },
 				{ path: 'profile', element: <PrivateRoute><Profile /></PrivateRoute> },
-				{ path: '*', element: <Navigate to="/products" replace /> },
+				{ path: '*', element: <Navigate to="/" replace /> },
 			],
+			errorElement: <ErrorPage />,
 		},
 	]);
 

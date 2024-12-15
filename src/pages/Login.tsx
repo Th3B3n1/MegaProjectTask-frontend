@@ -5,22 +5,40 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/components/auth/AuthContext';
+import { User } from '@/components/interfaces/User';
 
 export function Login() {
-    const [username, setUsername] = useState('user');
-    const [password, setPassword] = useState('asd123');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        login({
-            name: username,
-            email: "asd",
-            password: password
-        })
-        navigate("/products");
+        try {
+            let user: User | undefined;
+            let response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            })
+                .then(response => response.json())
+                .then(data => user = data)
+                .catch(error => console.error(error));
+            if (response.name != undefined && user) {
+                login({
+                    ...user,
+                    token: "adsd",
+                    cartItems: new Map(),
+                })
+                navigate("/products");
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -51,7 +69,7 @@ export function Login() {
                                 Forgot your password?
                             </Link>
                         </div>
-                        <Input id="password" type="password" value={password} required onInput={e => setPassword(e.currentTarget.value)}/>
+                        <Input id="password" type="password" value={password} required onInput={e => setPassword(e.currentTarget.value)} />
                     </div>
                     <Button type="submit" className="w-full" onClick={handleSubmit}>
                         Login

@@ -1,12 +1,15 @@
-import * as React from "react"
+import { Link } from "react-router-dom"
 import { ShoppingBagIcon, ShoppingCartIcon } from "lucide-react"
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar"
 import { NavMain } from "@/components/nav-main"
 import { NavUser } from "@/components/nav-user"
 import { useAuth } from "./auth/AuthContext"
-import { Link } from "react-router-dom"
 
 const data = {
+  shop: {
+    name: "Example Shop Name",
+    type: "Example type of shop",
+  },
   navMain: [
     {
       title: "Products",
@@ -36,8 +39,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <ShoppingCartIcon className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Example Shop Name</span>
-                  <span className="truncate text-xs">Example type of shop</span>
+                  <span className="truncate font-semibold">{data.shop.name}</span>
+                  <span className="truncate text-xs">{data.shop.type}</span>
                 </div>
               </Link>
             </SidebarMenuButton>

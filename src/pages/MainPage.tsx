@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 
-export function Sidebar() {
+export function MainPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
