@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -9,13 +10,14 @@ import { useAuth } from '@/components/auth/AuthContext';
 import { CheckIcon } from 'lucide-react';
 
 export function Products() {
+    const navigate = useNavigate();
+    const { user, addToCart } = useAuth();
     const [search, setSearch] = useState<string>("");
     const [products, setProducts] = useState<Array<Product>>(new Array<Product>());
-    const { user, addToCart } = useAuth();
     const [selectedProduct, setSelectedProduct] = useState<Map<Number, Product>>(user?.cartItems || new Map());
 
     function addProductToCart(product: Product): void {
-        setSelectedProduct(new Map<Number, Product>(addToCart(product)) || new Map());
+        (user) ? setSelectedProduct(new Map<Number, Product>(addToCart(product)) || new Map()) : navigate("/login");
     }
 
     useEffect(() => {

@@ -8,11 +8,16 @@ import { useAuth } from '@/components/auth/AuthContext';
 import { Product } from '@/components/interfaces/Product';
 
 export function Cart() {
-    const { user, removeFromCart } = useAuth();
+    const { user, removeFromCart, clearCart } = useAuth();
     const [cartItems, setCartItems] = useState<Map<Number, Product>>(user?.cartItems || new Map());
 
     function removeCartItem(product: Product): void {   
         setCartItems(new Map<Number, Product>(removeFromCart(product)) || new Map());
+    }
+
+    function clearCartItems()
+    {
+        setCartItems(new Map<Number, Product>(clearCart()) || new Map());
     }
 
     return (
@@ -36,7 +41,7 @@ export function Cart() {
                             <dd className="text-base font-bold text-gray-900 dark:text-white">${[...cartItems.values()].reduce((acc, item) => acc + item.price, 0) + Math.floor(([...cartItems.values()].reduce((acc, item) => acc + item.price, 0)) * 0.27)}</dd>
                         </dl>
                         <Button className='order-2' onClick={e => e.currentTarget}>Checkout</Button>
-                        <Button className='order-4' variant="destructive" onClick={e => e.currentTarget}>Clear Cart</Button>
+                        <Button className='order-4' variant="destructive" onClick={clearCartItems}>Clear Cart</Button>
                     </div>
                 </CardContent>
             </Card>

@@ -77,7 +77,7 @@ export function NavUser(props?: Props) {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Link to="/login" className="flex items-center gap-2">
+              <Link to={"/login"} className="flex items-center gap-2">
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">Login or Register</span>
                   <span className="truncate text-xs">to shop at us!</span>

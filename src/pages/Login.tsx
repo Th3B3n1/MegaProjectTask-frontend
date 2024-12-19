@@ -16,28 +16,22 @@ export function Login() {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        try {
-            let user: User | undefined;
-            let response = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
+        let response: Response = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name: username, password: password }),
+        })
+            .then(response => {return response})
+            .catch(error => console.error(error)) as Response;
+        if (response.ok) {
+            login({
+                ...await response.json() as unknown as User,
+                token: "adsd",
+                cartItems: new Map(),
             })
-                .then(response => response.json())
-                .then(data => user = data)
-                .catch(error => console.error(error));
-            if (response.name != undefined && user) {
-                login({
-                    ...user,
-                    token: "adsd",
-                    cartItems: new Map(),
-                })
-                navigate("/products");
-            }
-        } catch (error) {
-            console.error(error);
+            navigate("/products");
         }
     };
 

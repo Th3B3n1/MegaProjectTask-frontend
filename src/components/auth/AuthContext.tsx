@@ -9,6 +9,7 @@ interface AuthContextType {
     autoLogin: () => void;
     addToCart: (product: Product) => Map<Number, Product> | undefined;
     removeFromCart: (product: Product) => Map<Number, Product> | undefined;
+    clearCart: () => Map<Number, Product> | undefined;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     function addToCart(product: Product): Map<Number, Product> | undefined {
-        (user) ? (user.cartItems.set(product.id, product)) : alert('Please login to add items to cart');
+        user?.cartItems.set(product.id, product);
         return user?.cartItems;
     }
     
@@ -43,8 +44,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return user?.cartItems;
     }
 
+    function clearCart(): Map<Number, Product> | undefined
+    {
+        user?.cartItems.clear();
+        return user?.cartItems;
+    }
+
     return (
-        <AuthContext.Provider value={{ user, autoLogin, login, logout, addToCart, removeFromCart }}>
+        <AuthContext.Provider value={{ user, autoLogin, login, logout, addToCart, removeFromCart, clearCart }}>
             {children}
         </AuthContext.Provider>
     );
